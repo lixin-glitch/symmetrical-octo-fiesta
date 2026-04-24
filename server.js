@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // 内存存储（用于测试）
 const memoryStore = new Map();
@@ -29,6 +29,11 @@ app.use(cors({
 
 // 解析JSON请求体
 app.use(express.json());
+
+// 根路径健康检查
+app.get('/', (req, res) => {
+  res.status(200).send('后端服务运行正常');
+});
 
 // 健康检查端点
 app.get('/health', (req, res) => {
@@ -86,7 +91,7 @@ app.use((req, res) => {
 });
 
 // 启动服务器
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on 0.0.0.0:${PORT}`);
   console.log('Using memory storage for testing');
 });
